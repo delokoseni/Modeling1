@@ -248,7 +248,7 @@ namespace Modeling1
                 x += task1[i, 1];
             labelDowntime.Visible = true;
             labelDowntime.Location = new Point(13, 142);
-            labelDowntime.Text = "Сумма простоев: ";
+            labelDowntime.Text = "Время окончания обработки: ";
             labelDowntime.Text += Convert.ToString(x);
         }
 
@@ -632,7 +632,7 @@ namespace Modeling1
             {
                 x += task2[i, 2];
             }
-            labelDowntime.Text = "Сумма простоев: ";
+            labelDowntime.Text = "Время окончания обработки: ";
             labelDowntime.Text += Convert.ToString(x);
         }
 
