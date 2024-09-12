@@ -15,7 +15,6 @@ namespace Modeling1
         private Graphics g;
         private int[,] task1;
         private int[,] task2;
-        private bool check;
         public Form1()
         {
             InitializeComponent();
@@ -49,7 +48,6 @@ namespace Modeling1
             buttonRun12.Visible = false;
             buttonRun21.Visible = false;
             buttonRun22.Visible = false;
-            buttonCheck.Visible = false;
             labelDowntime.Visible = false;
             this.BackColor = Color.White;
         }
@@ -102,7 +100,6 @@ namespace Modeling1
             buttonRun22.Visible = false;
             g.Clear(Color.White);
             labelDowntime.Visible = true;
-            buttonCheck.Visible = false;
             labelI.Visible = true;
             label1.Visible = true;
             label2.Visible = true;
@@ -164,6 +161,7 @@ namespace Modeling1
             labelB4.Text = Convert.ToString(task1[3, 1]);
             labelB5.Text = Convert.ToString(task1[4, 1]);
             findAmountOfDowntime2xn();
+            g.Clear(Color.White);
             DrawGant2xn();
         }
 
@@ -181,6 +179,7 @@ namespace Modeling1
             labelB4.Text = Convert.ToString(task1[3, 1]);
             labelB5.Text = Convert.ToString(task1[4, 1]);
             findAmountOfDowntime2xn();
+            g.Clear(Color.White);
             DrawGant2xn();
         }
 
@@ -340,8 +339,6 @@ namespace Modeling1
             }
         }
 
-
-
         #endregion
 
         /**
@@ -411,36 +408,18 @@ namespace Modeling1
                 { 6, 3, 4 },
                 { 5, 2, 8 }
             };
-            buttonCheck.Visible = true;
             buttonRun21.Visible = true;
             buttonRun22.Visible = true;
         }
 
-        private void buttonCheck_Click(object sender, EventArgs e)
-        {
-            check = CheckData();
-            if (check == true)
-            {
-                labelDowntime.Visible = true;
-                labelDowntime.Location = new Point(13, 142);
-                labelDowntime.Text = "Условие сходимости выполняется";
-                convertToNx2();
-            }
-            else
-            {
-                labelDowntime.Visible = true;
-                labelDowntime.Location = new Point(13, 142);
-                labelDowntime.Text = "Условие сходимости не выполняется";
-                task2 = Sort(task2); //непонятно
-            }
-        }
-
-        //Предположительно по алгоритму
+        //по алгоритму
         private void buttonRun21_Click(object sender, EventArgs e)
         {
-            if (check == true)
+            if (CheckData())
             {
-                sort3xn();
+                convertToNx2();
+
+                task1 = sort2xn();
                 labelA1.Text = Convert.ToString(task1[0, 0]);
                 labelA2.Text = Convert.ToString(task1[1, 0]);
                 labelA3.Text = Convert.ToString(task1[2, 0]);
@@ -451,45 +430,13 @@ namespace Modeling1
                 labelB3.Text = Convert.ToString(task1[2, 1]);
                 labelB4.Text = Convert.ToString(task1[3, 1]);
                 labelB5.Text = Convert.ToString(task1[4, 1]);
+                findAmountOfDowntime2xn();
+                g.Clear(Color.White);
+                DrawGant2xn();
             }
             else
             {
-                labelDowntime.Text = "Время обработки: ";
-                int t = 0;
-                for (int i = 0; i < task2.GetLength(0); i++)
-                {
-                    t += Math.Max(task2[i, 0] - task2[i, 1], 0);
-                    t += Math.Max(task2[i, 1] - task2[i, 2], 0);
-                }
-                for (int i = 0; i < task2.GetLength(0); i++)
-                {
-                    t += task2[i, 2];
-                }
-                labelDowntime.Text += Convert.ToString(t);
-                labelA1.Text = Convert.ToString(task2[0, 0]);
-                labelA1.Text = Convert.ToString(task2[0, 0]);
-                labelA2.Text = Convert.ToString(task2[1, 0]);
-                labelA3.Text = Convert.ToString(task2[2, 0]);
-                labelA4.Text = Convert.ToString(task2[3, 0]);
-                labelA5.Text = Convert.ToString(task2[4, 0]);
-                labelB1.Text = Convert.ToString(task2[0, 1]);
-                labelB2.Text = Convert.ToString(task2[1, 1]);
-                labelB3.Text = Convert.ToString(task2[2, 1]);
-                labelB4.Text = Convert.ToString(task2[3, 1]);
-                labelB5.Text = Convert.ToString(task2[4, 1]);
-                labelC1.Text = Convert.ToString(task2[0, 2]);
-                labelC2.Text = Convert.ToString(task2[1, 2]);
-                labelC3.Text = Convert.ToString(task2[2, 2]);
-                labelC4.Text = Convert.ToString(task2[3, 2]);
-                labelC5.Text = Convert.ToString(task2[4, 2]);
-            }
-        }
-
-        //Предположительно перебором
-        private void buttonRun22_Click(object sender, EventArgs e)
-        {
-            if (check == true)
-            {
+                task2 = Swaper.GetBestPermutationNx3(task2);
                 labelA.Text = "Ai";
                 labelA1.Text = Convert.ToString(task2[0, 0]);
                 labelA1.Text = Convert.ToString(task2[0, 0]);
@@ -514,14 +461,46 @@ namespace Modeling1
                 labelC4.Text = Convert.ToString(task2[3, 2]);
                 labelC5.Visible = true;
                 labelC5.Text = Convert.ToString(task2[4, 2]);
+                labelDowntime.Visible = true;
                 findAmountOfDowntime3xn();
+                g.Clear(Color.White);
                 draw3xn();
             }
-            else
-            {
-                draw3xn();
-            }
+            
+        }
 
+        //Перебором
+        private void buttonRun22_Click(object sender, EventArgs e)
+        {
+            task2 = Swaper.GetBestPermutationNx3(task2);
+            labelA.Text = "Ai";
+            labelA1.Text = Convert.ToString(task2[0, 0]);
+            labelA1.Text = Convert.ToString(task2[0, 0]);
+            labelA2.Text = Convert.ToString(task2[1, 0]);
+            labelA3.Text = Convert.ToString(task2[2, 0]);
+            labelA4.Text = Convert.ToString(task2[3, 0]);
+            labelA5.Text = Convert.ToString(task2[4, 0]);
+            labelB.Text = "Bi";
+            labelB1.Text = Convert.ToString(task2[0, 1]);
+            labelB2.Text = Convert.ToString(task2[1, 1]);
+            labelB3.Text = Convert.ToString(task2[2, 1]);
+            labelB4.Text = Convert.ToString(task2[3, 1]);
+            labelB5.Text = Convert.ToString(task2[4, 1]);
+            labelC.Visible = true;
+            labelC1.Visible = true;
+            labelC1.Text = Convert.ToString(task2[0, 2]);
+            labelC2.Visible = true;
+            labelC2.Text = Convert.ToString(task2[1, 2]);
+            labelC3.Visible = true;
+            labelC3.Text = Convert.ToString(task2[2, 2]);
+            labelC4.Visible = true;
+            labelC4.Text = Convert.ToString(task2[3, 2]);
+            labelC5.Visible = true;
+            labelC5.Text = Convert.ToString(task2[4, 2]);
+            labelDowntime.Visible = true;
+            findAmountOfDowntime3xn();
+            g.Clear(Color.White);
+            draw3xn();
         }
 
         /**

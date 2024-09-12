@@ -56,7 +56,6 @@
             this.buttonRun12 = new System.Windows.Forms.Button();
             this.labelDowntime = new System.Windows.Forms.Label();
             this.buttonTask2 = new System.Windows.Forms.Button();
-            this.buttonCheck = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.buttonRun21 = new System.Windows.Forms.Button();
             this.buttonRun22 = new System.Windows.Forms.Button();
@@ -340,16 +339,6 @@
             this.buttonTask2.UseVisualStyleBackColor = true;
             this.buttonTask2.Click += new System.EventHandler(this.buttonTask2_Click);
             // 
-            // buttonCheck
-            // 
-            this.buttonCheck.Location = new System.Drawing.Point(94, 42);
-            this.buttonCheck.Name = "buttonCheck";
-            this.buttonCheck.Size = new System.Drawing.Size(156, 25);
-            this.buttonCheck.TabIndex = 33;
-            this.buttonCheck.Text = "Проверить условие";
-            this.buttonCheck.UseVisualStyleBackColor = true;
-            this.buttonCheck.Click += new System.EventHandler(this.buttonCheck_Click);
-            // 
             // label5
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -364,19 +353,19 @@
             // 
             this.buttonRun21.Location = new System.Drawing.Point(94, 71);
             this.buttonRun21.Name = "buttonRun21";
-            this.buttonRun21.Size = new System.Drawing.Size(156, 23);
+            this.buttonRun21.Size = new System.Drawing.Size(175, 50);
             this.buttonRun21.TabIndex = 35;
-            this.buttonRun21.Text = "Run-1";
+            this.buttonRun21.Text = "Найти алгоритмом";
             this.buttonRun21.UseVisualStyleBackColor = true;
             this.buttonRun21.Click += new System.EventHandler(this.buttonRun21_Click);
             // 
             // buttonRun22
             // 
-            this.buttonRun22.Location = new System.Drawing.Point(94, 100);
+            this.buttonRun22.Location = new System.Drawing.Point(94, 121);
             this.buttonRun22.Name = "buttonRun22";
-            this.buttonRun22.Size = new System.Drawing.Size(156, 23);
+            this.buttonRun22.Size = new System.Drawing.Size(175, 50);
             this.buttonRun22.TabIndex = 36;
-            this.buttonRun22.Text = "Run-2";
+            this.buttonRun22.Text = "Найти перебором";
             this.buttonRun22.UseVisualStyleBackColor = true;
             this.buttonRun22.Click += new System.EventHandler(this.buttonRun22_Click);
             // 
@@ -387,7 +376,6 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.buttonRun22);
             this.Controls.Add(this.buttonRun21);
-            this.Controls.Add(this.buttonCheck);
             this.Controls.Add(this.buttonTask2);
             this.Controls.Add(this.labelDowntime);
             this.Controls.Add(this.buttonRun1);
@@ -455,7 +443,6 @@
         private System.Windows.Forms.Button buttonRun12;
         private System.Windows.Forms.Label labelDowntime;
         private System.Windows.Forms.Button buttonTask2;
-        private System.Windows.Forms.Button buttonCheck;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button buttonRun21;
         private System.Windows.Forms.Button buttonRun22;

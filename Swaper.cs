@@ -41,18 +41,37 @@ namespace Modeling1
         static int CalculateDowntime(int[,] matrix, int[] indices)
         {
             int downtime = 0;
-            int x = 0;
 
             for (int i = 0; i < indices.Length; i++)
             {
                 if (i == 0)
-                    x = matrix[indices[i], 0];
+                    downtime = matrix[indices[i], 0];
                 else
-                    x += Math.Max(matrix[indices[i], 0] - matrix[indices[i - 1], 1], 0);
+                    downtime += Math.Max(matrix[indices[i], 0] - matrix[indices[i - 1], 1], 0);
             }
 
             for (int i = 0; i < indices.Length; i++)
-                x += matrix[indices[i], 1];
+                downtime += matrix[indices[i], 1];
+
+            return downtime;
+        }
+
+        static int CalculateDowntimeNx3(int[,] matrix, int[] indices)
+        {
+            int xk = 0, xh = 0;
+
+            for (int i = 0; i < indices.Length; i++)
+            {
+                xk += Math.Max(matrix[indices[i], 0] - matrix[indices[i], 1], 0);
+                xh += Math.Max(matrix[indices[i], 1] - matrix[indices[i], 2], 0);
+            }
+
+            int x = xk + xh;
+
+            for (int i = 0; i < indices.Length; i++)
+            {
+                x += matrix[indices[i], 2];
+            }
 
             return x;
         }
@@ -83,6 +102,38 @@ namespace Modeling1
             arr[i] = arr[j];
             arr[j] = temp;
         }
-    }
 
+        public static int[,] GetBestPermutationNx3(int[,] matrix)
+        {
+            int[] indices = new int[matrix.GetLength(0)];
+            for (int i = 0; i < indices.Length; i++)
+                indices[i] = i;
+
+            int[] bestPermutation = (int[])indices.Clone();
+            int minDowntime = int.MaxValue;
+
+            do
+            {
+                int currentDowntime = CalculateDowntimeNx3(matrix, indices);
+                if (currentDowntime < minDowntime)
+                {
+                    minDowntime = currentDowntime;
+                    bestPermutation = (int[])indices.Clone();
+                }
+            } while (NextPermutation(indices));
+
+            // Создаем новую матрицу для лучшей перестановки
+            int[,] bestMatrix = new int[matrix.GetLength(0), matrix.GetLength(1)];
+            for (int i = 0; i < bestPermutation.Length; i++)
+            {
+                bestMatrix[i, 0] = matrix[bestPermutation[i], 0];
+                bestMatrix[i, 1] = matrix[bestPermutation[i], 1];
+                bestMatrix[i, 2] = matrix[bestPermutation[i], 2];
+            }
+
+            return bestMatrix;
+        }
+    }
 }
+
+
