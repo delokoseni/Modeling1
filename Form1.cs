@@ -263,79 +263,74 @@ namespace Modeling1
             SolidBrush sbDowntime = new SolidBrush(Color.LightGray);
 
             // Начальная позиция для графиков
-            Rectangle rec = new Rectangle(100, 200, 1, 20); // Измените X для отступа от левого края
-            int width;
+            int x = 100; // Измените X для отступа от левого края
+            int y = 200;
+            int squareSize = 10; // Размер квадратика
+            int spacing = 2; // Расстояние между квадратиками
 
             // Отрисовка графиков Ганта и названий станков
             for (int i = 0; i < task1.GetLength(0); i++)
             {
-                // Устанавливаем ширину прямоугольника
-                width = task1[i, 0] * 10;
-                rec.Width = width;
+                int width = task1[i, 0]; // Ширина в единицах
+                int numSquares = width; // Количество квадратиков
 
-                // Рисуем прямоугольник в зависимости от индекса
-                if (i == 0)
-                    g.FillRectangle(sb1, rec);
-                else if (i == 1)
-                    g.FillRectangle(sb2, rec);
-                else if (i == 2)
-                    g.FillRectangle(sb3, rec);
-                else if (i == 3)
-                    g.FillRectangle(sb4, rec);
-                else
-                    g.FillRectangle(sb5, rec);
-
-                // Рисуем текст названия станка только для A и B
-                if (i == 0)
+                // Рисуем квадратики в зависимости от индекса
+                for (int j = 0; j < numSquares; j++)
                 {
-                    g.DrawString("Станок A", this.Font, Brushes.Black, new Point(10, rec.Y + i * 50));
-                }
-                else if (i == 1)
-                {
-                    g.DrawString("Станок B", this.Font, Brushes.Black, new PointF(10, rec.Y + i * 50));
+                    Rectangle square = new Rectangle(x + j * (squareSize + spacing), y, squareSize, squareSize);
+                    if (i == 0)
+                        g.FillRectangle(sb1, square);
+                    else if (i == 1)
+                        g.FillRectangle(sb2, square);
+                    else if (i == 2)
+                        g.FillRectangle(sb3, square);
+                    else if (i == 3)
+                        g.FillRectangle(sb4, square);
+                    else
+                        g.FillRectangle(sb5, square);
                 }
 
-                // Перемещаем прямоугольник вправо
-                rec.X += width;
+                // Перемещаем позицию вправо с учетом ширины и расстояния между квадратиками
+                x += (numSquares * (squareSize + spacing));
             }
 
+            // Рисуем текст названия станка только для A и B
+            g.DrawString("Станок A", this.Font, Brushes.Black, new Point(10, y));
+            g.DrawString("Станок B", this.Font, Brushes.Black, new Point(10, y + 50));
+
             // Отрисовка простоев
-            rec.Y += 50; // Смещение вниз для следующего ряда
-            rec.X = 100; // Сброс X для простоев
+            y += 50; // Смещение вниз для следующего ряда
+            x = 100; // Сброс X для простоев
 
-            width = task1[0, 0] * 10;
-            rec.Width = width;
-            g.FillRectangle(sbDowntime, rec);
-            rec.X += width;
-
-            width = task1[0, 1] * 10;
-            rec.Width = width;
-            g.FillRectangle(sb1, rec);
-            rec.X += width;
-
-            for (int i = 1; i < task1.GetLength(0); i++)
+            // Рисуем простоев для первого станка
+            for (int i = 0; i < task1.GetLength(0); i++)
             {
-                int downtime = Math.Max(task1[i, 0] - task1[i - 1, 1], 0);
-                if (downtime > 0)
+                int downtime = Math.Max(task1[i, 0] - (i > 0 ? task1[i - 1, 1] : 0), 0);
+                int numDowntimeSquares = downtime; // Количество квадратиков для простоев
+                for (int j = 0; j < numDowntimeSquares; j++)
                 {
-                    width = downtime * 10;
-                    rec.Width = width;
-                    g.FillRectangle(sbDowntime, rec);
-                    rec.X += width;
+                    Rectangle square = new Rectangle(x + j * (squareSize + spacing), y, squareSize, squareSize);
+                    g.FillRectangle(sbDowntime, square);
                 }
-                width = task1[i, 1] * 10;
-                rec.Width = width;
-                if (i == 0)
-                    g.FillRectangle(sb1, rec);
-                else if (i == 1)
-                    g.FillRectangle(sb2, rec);
-                else if (i == 2)
-                    g.FillRectangle(sb3, rec);
-                else if (i == 3)
-                    g.FillRectangle(sb4, rec);
-                else
-                    g.FillRectangle(sb5, rec);
-                rec.X += width;
+                x += (numDowntimeSquares * (squareSize + spacing)); // Обновляем x с учетом простоев
+
+                int duration = task1[i, 1];
+                int numDurationSquares = duration; // Количество квадратиков для длительности
+                for (int j = 0; j < numDurationSquares; j++)
+                {
+                    Rectangle square = new Rectangle(x + j * (squareSize + spacing), y, squareSize, squareSize);
+                    if (i == 0)
+                        g.FillRectangle(sb1, square);
+                    else if (i == 1)
+                        g.FillRectangle(sb2, square);
+                    else if (i == 2)
+                        g.FillRectangle(sb3, square);
+                    else if (i == 3)
+                        g.FillRectangle(sb4, square);
+                    else
+                        g.FillRectangle(sb5, square);
+                }
+                x += (numDurationSquares * (squareSize + spacing)); // Обновляем x с учетом длительности
             }
         }
 
