@@ -53,11 +53,11 @@
             this.labelC4 = new System.Windows.Forms.Label();
             this.labelC5 = new System.Windows.Forms.Label();
             this.buttonRun1 = new System.Windows.Forms.Button();
+            this.buttonRun12 = new System.Windows.Forms.Button();
             this.labelDowntime = new System.Windows.Forms.Label();
             this.buttonTask2 = new System.Windows.Forms.Button();
             this.buttonCheck = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
-            this.buttonTask3 = new System.Windows.Forms.Button();
             this.buttonRun21 = new System.Windows.Forms.Button();
             this.buttonRun22 = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -68,7 +68,7 @@
             this.buttonTask1.Name = "buttonTask1";
             this.buttonTask1.Size = new System.Drawing.Size(75, 23);
             this.buttonTask1.TabIndex = 0;
-            this.buttonTask1.Text = "1";
+            this.buttonTask1.Text = "№1";
             this.buttonTask1.UseVisualStyleBackColor = true;
             this.buttonTask1.Click += new System.EventHandler(this.buttonTask1_Click);
             // 
@@ -306,16 +306,26 @@
             // 
             this.buttonRun1.Location = new System.Drawing.Point(13, 42);
             this.buttonRun1.Name = "buttonRun1";
-            this.buttonRun1.Size = new System.Drawing.Size(75, 23);
+            this.buttonRun1.Size = new System.Drawing.Size(175, 50);
             this.buttonRun1.TabIndex = 30;
-            this.buttonRun1.Text = "Run";
+            this.buttonRun1.Text = "Найти алгоритмом";
             this.buttonRun1.UseVisualStyleBackColor = true;
             this.buttonRun1.Click += new System.EventHandler(this.buttonSort1_Click);
+            // 
+            // buttonRun12
+            // 
+            this.buttonRun12.Location = new System.Drawing.Point(13, 92);
+            this.buttonRun12.Name = "buttonRun12";
+            this.buttonRun12.Size = new System.Drawing.Size(175, 50);
+            this.buttonRun12.TabIndex = 34;
+            this.buttonRun12.Text = "Найти перебором";
+            this.buttonRun12.UseVisualStyleBackColor = true;
+            this.buttonRun12.Click += new System.EventHandler(this.buttonSort12_Click);
             // 
             // labelDowntime
             // 
             this.labelDowntime.AutoSize = true;
-            this.labelDowntime.Location = new System.Drawing.Point(12, 68);
+            this.labelDowntime.Location = new System.Drawing.Point(13, 142);
             this.labelDowntime.Name = "labelDowntime";
             this.labelDowntime.Size = new System.Drawing.Size(0, 16);
             this.labelDowntime.TabIndex = 31;
@@ -324,9 +334,9 @@
             // 
             this.buttonTask2.Location = new System.Drawing.Point(94, 12);
             this.buttonTask2.Name = "buttonTask2";
-            this.buttonTask2.Size = new System.Drawing.Size(75, 23);
+            this.buttonTask2.Size = new System.Drawing.Size(75, 25);
             this.buttonTask2.TabIndex = 32;
-            this.buttonTask2.Text = "2";
+            this.buttonTask2.Text = "№2";
             this.buttonTask2.UseVisualStyleBackColor = true;
             this.buttonTask2.Click += new System.EventHandler(this.buttonTask2_Click);
             // 
@@ -334,9 +344,9 @@
             // 
             this.buttonCheck.Location = new System.Drawing.Point(94, 42);
             this.buttonCheck.Name = "buttonCheck";
-            this.buttonCheck.Size = new System.Drawing.Size(156, 23);
+            this.buttonCheck.Size = new System.Drawing.Size(156, 25);
             this.buttonCheck.TabIndex = 33;
-            this.buttonCheck.Text = "Check";
+            this.buttonCheck.Text = "Проверить условие";
             this.buttonCheck.UseVisualStyleBackColor = true;
             this.buttonCheck.Click += new System.EventHandler(this.buttonCheck_Click);
             // 
@@ -349,16 +359,6 @@
             this.label5.Size = new System.Drawing.Size(14, 16);
             this.label5.TabIndex = 14;
             this.label5.Text = "5";
-            // 
-            // buttonTask3
-            // 
-            this.buttonTask3.Location = new System.Drawing.Point(175, 12);
-            this.buttonTask3.Name = "buttonTask3";
-            this.buttonTask3.Size = new System.Drawing.Size(75, 23);
-            this.buttonTask3.TabIndex = 34;
-            this.buttonTask3.Text = "3";
-            this.buttonTask3.UseVisualStyleBackColor = true;
-            this.buttonTask3.Click += new System.EventHandler(this.buttonTask3_Click);
             // 
             // buttonRun21
             // 
@@ -387,11 +387,11 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.buttonRun22);
             this.Controls.Add(this.buttonRun21);
-            this.Controls.Add(this.buttonTask3);
             this.Controls.Add(this.buttonCheck);
             this.Controls.Add(this.buttonTask2);
             this.Controls.Add(this.labelDowntime);
             this.Controls.Add(this.buttonRun1);
+            this.Controls.Add(this.buttonRun12);
             this.Controls.Add(this.labelC5);
             this.Controls.Add(this.labelC4);
             this.Controls.Add(this.labelC3);
@@ -452,11 +452,11 @@
         private System.Windows.Forms.Label labelC4;
         private System.Windows.Forms.Label labelC5;
         private System.Windows.Forms.Button buttonRun1;
+        private System.Windows.Forms.Button buttonRun12;
         private System.Windows.Forms.Label labelDowntime;
         private System.Windows.Forms.Button buttonTask2;
         private System.Windows.Forms.Button buttonCheck;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button buttonTask3;
         private System.Windows.Forms.Button buttonRun21;
         private System.Windows.Forms.Button buttonRun22;
     }
