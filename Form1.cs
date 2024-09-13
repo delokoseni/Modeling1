@@ -263,7 +263,7 @@ namespace Modeling1
             SolidBrush sbDowntime = new SolidBrush(Color.LightGray);
 
             // Начальная позиция для графиков
-            int x = 100; // Измените X для отступа от левого края
+            int x = 10; // Измените X для отступа от левого края
             int y = 200;
             int squareSize = 10; // Размер квадратика
             int spacing = 2; // Расстояние между квадратиками
@@ -295,12 +295,12 @@ namespace Modeling1
             }
 
             // Рисуем текст названия станка только для A и B
-            g.DrawString("Станок A", this.Font, Brushes.Black, new Point(10, y));
-            g.DrawString("Станок B", this.Font, Brushes.Black, new Point(10, y + 50));
+            g.DrawString("Станок A", this.Font, Brushes.Black, new Point(10, y-20));
+            g.DrawString("Станок B", this.Font, Brushes.Black, new Point(10, y + 30));
 
             // Отрисовка простоев
             y += 50; // Смещение вниз для следующего ряда
-            x = 100; // Сброс X для простоев
+            x = 10; // Сброс X для простоев
             int[] downtime = new int[task1.GetLength(0)];
             // Рисуем простои для первого станка
             for (int i = 0; i < task1.GetLength(0); i++)
@@ -656,7 +656,7 @@ namespace Modeling1
             SolidBrush sbDowntime = new SolidBrush(Color.LightGray);
 
             // Начальная позиция для графиков
-            int x = 100; // Измените X для отступа от левого края
+            int x = 10; // Измените X для отступа от левого края
             int y = 200;
             int squareSize = 10; // Размер квадратика
             int spacing = 2; // Расстояние между квадратиками
@@ -687,13 +687,13 @@ namespace Modeling1
                 x += (numSquares * (squareSize + spacing));
             }
 
-            g.DrawString("Станок A", this.Font, Brushes.Black, new PointF(10, y));
-            g.DrawString("Станок B", this.Font, Brushes.Black, new PointF(10, y + 50));
-            g.DrawString("Станок C", this.Font, Brushes.Black, new PointF(10, y + 100));
+            g.DrawString("Станок A", this.Font, Brushes.Black, new PointF(10, y-20));
+            g.DrawString("Станок B", this.Font, Brushes.Black, new PointF(10, y + 30));
+            g.DrawString("Станок C", this.Font, Brushes.Black, new PointF(10, y + 80));
 
             // Отрисовка простоев
             y += 50; // Смещение вниз для следующего ряда
-            x = 100; // Сброс X для простоев
+            x = 10; // Сброс X для простоев
             int[] downtime = new int[task2.GetLength(0)];
             // Рисуем простои
             for (int i = 0; i < task2.GetLength(0); i++)
@@ -742,7 +742,7 @@ namespace Modeling1
 
             // Отрисовка простоев для второго ряда
             y += 50; // Смещение вниз для следующего ряда
-            x = 100; // Сброс X для простоев
+            x = 10; // Сброс X для простоев
 
             int[] downtimeforc = new int[task2.GetLength(0)]; // Массив для простоев
                                                               // Рисуем простои
