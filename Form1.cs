@@ -457,7 +457,6 @@ namespace Modeling1
             if (CheckData())
             {
                 convertToNx2();
-
                 task1 = sort2xn();
                 labelA1.Text = Convert.ToString(task1[0, 0]);
                 labelA2.Text = Convert.ToString(task1[1, 0]);
@@ -470,6 +469,7 @@ namespace Modeling1
                 labelB4.Text = Convert.ToString(task1[3, 1]);
                 labelB5.Text = Convert.ToString(task1[4, 1]);
                 g.Clear(Color.White);
+                labelDowntime.Visible = true;
                 findAmountOfDowntime2xn();
                 DrawGant2xn();
             }
