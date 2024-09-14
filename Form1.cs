@@ -386,7 +386,7 @@ namespace Modeling1
             labelA.Text = "Ai";
             labelB.Text = "Bi";
             g.Clear(Color.White);
-            labelDowntime.Visible = false;
+            labelDowntime.Visible = true;
             buttonRun1.Visible = false;
             buttonRun12.Visible = false;
             labelI.Visible = true;
@@ -732,8 +732,6 @@ namespace Modeling1
 
             labelDowntime.Text = "Время окончания обработки: " + totalTime;
         }
-
-
 
         private void draw3xn()
         {
