@@ -96,6 +96,12 @@ namespace Modeling1
         {
             labelA.Text = "Ai";
             labelB.Text = "Bi";
+            labelC.Visible = false;
+            labelC1.Visible = false;
+            labelC2.Visible = false;
+            labelC3.Visible = false;
+            labelC4.Visible = false;
+            labelC5.Visible = false;
             buttonRun21.Visible = false;
             buttonRun22.Visible = false;
             g.Clear(Color.White);
@@ -145,6 +151,8 @@ namespace Modeling1
             };
             buttonRun1.Visible = true;
             buttonRun12.Visible = true;
+            findAmountOfDowntime2xn();
+            DrawGant2xn();
         }
 
         private void buttonSort1_Click(object sender, EventArgs e)
@@ -236,21 +244,41 @@ namespace Modeling1
 
         private void findAmountOfDowntime2xn()
         {
-            int x = 0;
+            int[] x = new int[task1.GetLength(0)];
+
+            // Вычисляем простои для каждого задания
             for (int i = 0; i < task1.GetLength(0); i++)
             {
-                if (i == 0)
-                    x = task1[0, 0];
-                else
-                    x += Math.Max(task1[i, 0] - task1[i - 1, 1], 0);
+                int sumTask1 = 0;
+                for (int n = 0; n <= i; n++)
+                {
+                    sumTask1 += task1[n, 0];
+                }
+
+                int sumDowntime = 0;
+                int sumTask1Duration = 0;
+                for (int m = 0; m < i; m++)
+                {
+                    sumDowntime += x[m];
+                    sumTask1Duration += task1[m, 1];
+                }
+
+                x[i] = Math.Max(0, sumTask1 - sumDowntime - sumTask1Duration);
             }
+
+            // Вычисляем общее время окончания обработки
+            int totalTime = 0;
             for (int i = 0; i < task1.GetLength(0); i++)
-                x += task1[i, 1];
+            {
+                totalTime += x[i];
+                totalTime += task1[i, 1];
+            }
+
             labelDowntime.Visible = true;
             labelDowntime.Location = new Point(13, 142);
-            labelDowntime.Text = "Время окончания обработки: ";
-            labelDowntime.Text += Convert.ToString(x);
+            labelDowntime.Text = "Время окончания обработки: " + totalTime;
         }
+
 
         private void DrawGant2xn()
         {
@@ -419,6 +447,8 @@ namespace Modeling1
             };
             buttonRun21.Visible = true;
             buttonRun22.Visible = true;
+            findAmountOfDowntime3xn();
+            draw3xn();
         }
 
         //по алгоритму
@@ -439,8 +469,8 @@ namespace Modeling1
                 labelB3.Text = Convert.ToString(task1[2, 1]);
                 labelB4.Text = Convert.ToString(task1[3, 1]);
                 labelB5.Text = Convert.ToString(task1[4, 1]);
-                findAmountOfDowntime2xn();
                 g.Clear(Color.White);
+                findAmountOfDowntime2xn();
                 DrawGant2xn();
             }
             else
@@ -471,8 +501,8 @@ namespace Modeling1
                 labelC5.Visible = true;
                 labelC5.Text = Convert.ToString(task2[4, 2]);
                 labelDowntime.Visible = true;
-                findAmountOfDowntime3xn();
                 g.Clear(Color.White);
+                findAmountOfDowntime3xn();
                 draw3xn();
             }
             
@@ -506,9 +536,9 @@ namespace Modeling1
             labelC4.Text = Convert.ToString(task2[3, 2]);
             labelC5.Visible = true;
             labelC5.Text = Convert.ToString(task2[4, 2]);
+            g.Clear(Color.White);
             labelDowntime.Visible = true;
             findAmountOfDowntime3xn();
-            g.Clear(Color.White);
             draw3xn();
         }
 
@@ -630,20 +660,80 @@ namespace Modeling1
          */
         private void findAmountOfDowntime3xn()
         {
-            int xk = 0, xh = 0;
+            int[] downtime = new int[task2.GetLength(0)];
+            int[] downtimeforc = new int[task2.GetLength(0)]; // Массив для простоев
+
+            // Вычисляем простои
             for (int i = 0; i < task2.GetLength(0); i++)
             {
-                xk += Math.Max(task2[i, 0] - task2[i, 1], 0);
-                xh += Math.Max(task2[i, 1] - task2[i, 2], 0);
+                int sumTask2 = 0;
+                for (int n = 0; n <= i; n++)
+                {
+                    sumTask2 += task2[n, 0]; // Суммируем значения a_i
+                }
+
+                int sumDowntime = 0;
+                for (int m = 0; m < i; m++)
+                {
+                    sumDowntime += downtime[m]; // Суммируем предыдущие простои
+                }
+
+                int sumTask2Duration = 0;
+                for (int m = 0; m < i; m++)
+                {
+                    sumTask2Duration += task2[m, 1]; // Суммируем длительности b_i
+                }
+
+                // Вычисляем downtime для текущего задания
+                downtime[i] = Math.Max(0, sumTask2 - sumDowntime - sumTask2Duration);
             }
-            int x = xk + xh;
+
+            // Вычисляем простои для станка C
             for (int i = 0; i < task2.GetLength(0); i++)
             {
-                x += task2[i, 2];
+                // Суммируем downtime от 0 до i
+                int sumDowntimeForc = 0;
+                for (int m = 0; m <= i; m++)
+                {
+                    sumDowntimeForc += downtime[m];
+                }
+
+                // Суммируем task2 от 0 до i
+                int sumTask1 = 0;
+                for (int n = 0; n <= i; n++)
+                {
+                    sumTask1 += task2[n, 1]; // сумма bi
+                }
+
+                // Суммируем downtimeforc от 0 до i-1
+                int sumDowntimeForc2 = 0;
+                for (int n = 0; n < i; n++)
+                {
+                    sumDowntimeForc2 += downtimeforc[n];
+                }
+
+                // Суммируем task2 от 0 до i-1
+                int sumTask2Duration = 0;
+                for (int n = 0; n < i; n++)
+                {
+                    sumTask2Duration += task2[n, 2];
+                }
+
+                // Вычисляем downtimeforc[i]
+                downtimeforc[i] = Math.Max(0, sumDowntimeForc + sumTask1 - sumDowntimeForc2 - sumTask2Duration);
             }
-            labelDowntime.Text = "Время окончания обработки: ";
-            labelDowntime.Text += Convert.ToString(x);
+
+            int totalTime = 0;
+            for (int i = 0; i < task2.GetLength(0); i++)
+            {
+                totalTime += downtimeforc[i];
+                totalTime += task2[i, 2];
+            }
+
+            labelDowntime.Text = "Время окончания обработки: " + totalTime;
         }
+
+
 
         private void draw3xn()
         {
