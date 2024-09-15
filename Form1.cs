@@ -175,6 +175,14 @@ namespace Modeling1
 
         private void buttonSort12_Click(object sender, EventArgs e)
         {
+            task1 = new int[,]
+            {
+                { 12, 2 },
+                { 7, 4 },
+                { 4, 2 },
+                { 2, 8 },
+                { 1, 7 }
+            };
             task1 = Swaper.GetBestPermutation(task1);
             labelA1.Text = Convert.ToString(task1[0, 0]);
             labelA2.Text = Convert.ToString(task1[1, 0]);
@@ -186,8 +194,8 @@ namespace Modeling1
             labelB3.Text = Convert.ToString(task1[2, 1]);
             labelB4.Text = Convert.ToString(task1[3, 1]);
             labelB5.Text = Convert.ToString(task1[4, 1]);
-            findAmountOfDowntime2xn();
             g.Clear(Color.White);
+            findAmountOfDowntime2xn();
             DrawGant2xn();
         }
 
@@ -437,7 +445,7 @@ namespace Modeling1
             labelA2.Visible = true;
             labelA2.Text = "7";
             labelA3.Visible = true;
-            labelA3.Text = "3"; //4
+            labelA3.Text = "4"; 
             labelA4.Visible = true;
             labelA4.Text = "6";
             labelA5.Visible = true;
@@ -472,7 +480,7 @@ namespace Modeling1
             {
                 { 12, 2, 2 },
                 { 7, 4, 6 },
-                { 3, 2, 7 },
+                { 4, 2, 7 },
                 { 6, 3, 4 },
                 { 5, 2, 8 }
             };
