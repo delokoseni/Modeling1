@@ -157,6 +157,14 @@ namespace Modeling1
 
         private void buttonSort1_Click(object sender, EventArgs e)
         {
+            task1 = new int[,]
+            {
+                { 12, 2 },
+                { 7, 4 },
+                { 4, 2 },
+                { 2, 8 },
+                { 1, 7 }
+            };
             task1 = sort2xn();
             labelA1.Text = Convert.ToString(task1[0, 0]);
             labelA2.Text = Convert.ToString(task1[1, 0]);
@@ -494,7 +502,14 @@ namespace Modeling1
         private void buttonRun21_Click(object sender, EventArgs e)
         {
             int[,] task2Copy = (int[,])task2.Clone(); // Создаем копию task2
-
+            task2 = new int[,]
+            {
+                { 12, 2, 2 },
+                { 7, 4, 6 },
+                { 4, 2, 7 },
+                { 6, 3, 4 },
+                { 5, 2, 8 }
+            };
             if (CheckData())
             {
                 convertToNx2(task2Copy); // Передаем копию в метод
@@ -557,6 +572,14 @@ namespace Modeling1
         //Перебором
         private void buttonRun22_Click(object sender, EventArgs e)
         {
+            task2 = new int[,]
+            {
+                { 12, 2, 2 },
+                { 7, 4, 6 },
+                { 4, 2, 7 },
+                { 6, 3, 4 },
+                { 5, 2, 8 }
+            };
             task2 = Swaper.GetBestPermutationNx3(task2);
             labelA.Text = "Ai";
             labelA1.Text = Convert.ToString(task2[0, 0]);
