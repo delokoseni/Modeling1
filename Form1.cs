@@ -323,7 +323,7 @@ namespace Modeling1
             }
 
             // Рисуем текст названия станка только для A и B
-            g.DrawString("Станок A", this.Font, Brushes.Black, new Point(10, y-20));
+            g.DrawString("Станок A", this.Font, Brushes.Black, new Point(10, y - 20));
             g.DrawString("Станок B", this.Font, Brushes.Black, new Point(10, y + 30));
 
             // Отрисовка простоев
@@ -378,6 +378,37 @@ namespace Modeling1
 
         #endregion
 
+        private void RestoreTask2FromTask1(int[,] task2Copy)
+        {
+            for (int i = 0; i < task2.GetLength(0); i++)
+            {
+                task2[i, 0] = task1[i, 0] - task2Copy[i, 1]; // Восстанавливаем значения A
+                task2[i, 1] = task2Copy[i, 1]; // Значения B остаются теми же
+                task2[i, 2] = task1[i, 1] - task2Copy[i, 1]; // Восстанавливаем значения C
+            }
+
+            // Обновляем метки для task2
+            labelA.Text = "Ai";
+            labelA1.Text = Convert.ToString(task2[0, 0]);
+            labelA2.Text = Convert.ToString(task2[1, 0]);
+            labelA3.Text = Convert.ToString(task2[2, 0]);
+            labelA4.Text = Convert.ToString(task2[3, 0]);
+            labelA5.Text = Convert.ToString(task2[4, 0]);
+            labelB.Text = "Bi";
+            labelB1.Text = Convert.ToString(task2[0, 1]);
+            labelB2.Text = Convert.ToString(task2[1, 1]);
+            labelB3.Text = Convert.ToString(task2[2, 1]);
+            labelB4.Text = Convert.ToString(task2[3, 1]);
+            labelB5.Text = Convert.ToString(task2[4, 1]);
+            labelC.Visible = true;
+            labelC1.Text = Convert.ToString(task2[0, 2]);
+            labelC2.Text = Convert.ToString(task2[1, 2]);
+            labelC3.Text = Convert.ToString(task2[2, 2]);
+            labelC4.Text = Convert.ToString(task2[3, 2]);
+            labelC5.Text = Convert.ToString(task2[4, 2]);
+        }
+
+
         /**
          * Работа с заданием №2
          */
@@ -406,7 +437,7 @@ namespace Modeling1
             labelA2.Visible = true;
             labelA2.Text = "7";
             labelA3.Visible = true;
-            labelA3.Text = "4";
+            labelA3.Text = "3"; //4
             labelA4.Visible = true;
             labelA4.Text = "6";
             labelA5.Visible = true;
@@ -417,7 +448,7 @@ namespace Modeling1
             labelB2.Visible = true;
             labelB2.Text = "4";
             labelB3.Visible = true;
-            labelB3.Text = "2"; 
+            labelB3.Text = "2";
             labelB4.Visible = true;
             labelB4.Text = "3";
             labelB5.Visible = true;
@@ -441,7 +472,7 @@ namespace Modeling1
             {
                 { 12, 2, 2 },
                 { 7, 4, 6 },
-                { 4, 2, 7 },
+                { 3, 2, 7 },
                 { 6, 3, 4 },
                 { 5, 2, 8 }
             };
@@ -454,27 +485,34 @@ namespace Modeling1
         //по алгоритму
         private void buttonRun21_Click(object sender, EventArgs e)
         {
+            int[,] task2Copy = (int[,])task2.Clone(); // Создаем копию task2
+
             if (CheckData())
             {
-                convertToNx2();
+                convertToNx2(task2Copy); // Передаем копию в метод
                 task1 = sort2xn();
-                labelA1.Text = Convert.ToString(task1[0, 0]);
-                labelA2.Text = Convert.ToString(task1[1, 0]);
-                labelA3.Text = Convert.ToString(task1[2, 0]);
-                labelA4.Text = Convert.ToString(task1[3, 0]);
-                labelA5.Text = Convert.ToString(task1[4, 0]);
-                labelB1.Text = Convert.ToString(task1[0, 1]);
-                labelB2.Text = Convert.ToString(task1[1, 1]);
-                labelB3.Text = Convert.ToString(task1[2, 1]);
-                labelB4.Text = Convert.ToString(task1[3, 1]);
-                labelB5.Text = Convert.ToString(task1[4, 1]);
+                RestoreTask2FromTask1(task2Copy);
+                labelC.Visible = true;
+                labelC1.Visible = true;
+                labelC1.Text = Convert.ToString(task2[0, 2]);
+                labelC2.Visible = true;
+                labelC2.Text = Convert.ToString(task2[1, 2]);
+                labelC3.Visible = true;
+                labelC3.Text = Convert.ToString(task2[2, 2]);
+                labelC4.Visible = true;
+                labelC4.Text = Convert.ToString(task2[3, 2]);
+                labelC5.Visible = true;
+                labelC5.Text = Convert.ToString(task2[4, 2]);
                 g.Clear(Color.White);
                 labelDowntime.Visible = true;
-                findAmountOfDowntime2xn();
-                DrawGant2xn();
+                findAmountOfDowntime3xn();
+                draw3xn();
             }
             else
             {
+                // Показываем сообщение о том, что условие не выполняется
+                MessageBox.Show("Условие не выполняется, результат был найден перебором", "Информация",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
                 task2 = Swaper.GetBestPermutationNx3(task2);
                 labelA.Text = "Ai";
                 labelA1.Text = Convert.ToString(task2[0, 0]);
@@ -505,7 +543,7 @@ namespace Modeling1
                 findAmountOfDowntime3xn();
                 draw3xn();
             }
-            
+
         }
 
         //Перебором
@@ -570,7 +608,7 @@ namespace Modeling1
          * Метод сводит задачу с тремя станками
          * к задаче с двуммя станками
          */
-        private void convertToNx2()
+        /*private void convertToNx2()
         {
             task1 = new int[5, 2];
             for (int i = 0; i < task1.GetLength(0); i++)
@@ -597,7 +635,37 @@ namespace Modeling1
             labelC3.Visible = false;
             labelC4.Visible = false;
             labelC5.Visible = false;
+        }*/
+
+        private void convertToNx2(int[,] inputTask)
+        {
+            task1 = new int[inputTask.GetLength(0), 2];
+            for (int i = 0; i < task1.GetLength(0); i++)
+            {
+                task1[i, 0] = inputTask[i, 0] + inputTask[i, 1];
+                task1[i, 1] = inputTask[i, 2] + inputTask[i, 1];
+            }
+            labelA.Text = "Di";
+            labelA1.Text = Convert.ToString(task1[0, 0]);
+            labelA1.Text = Convert.ToString(task1[0, 0]);
+            labelA2.Text = Convert.ToString(task1[1, 0]);
+            labelA3.Text = Convert.ToString(task1[2, 0]);
+            labelA4.Text = Convert.ToString(task1[3, 0]);
+            labelA5.Text = Convert.ToString(task1[4, 0]);
+            labelB.Text = "Ei";
+            labelB1.Text = Convert.ToString(task1[0, 1]);
+            labelB2.Text = Convert.ToString(task1[1, 1]);
+            labelB3.Text = Convert.ToString(task1[2, 1]);
+            labelB4.Text = Convert.ToString(task1[3, 1]);
+            labelB5.Text = Convert.ToString(task1[4, 1]);
+            labelC.Visible = false;
+            labelC1.Visible = false;
+            labelC2.Visible = false;
+            labelC3.Visible = false;
+            labelC4.Visible = false;
+            labelC5.Visible = false;
         }
+
 
         /**
          * Алгоритм Джонсона для матрицы Nx3
@@ -775,7 +843,7 @@ namespace Modeling1
                 x += (numSquares * (squareSize + spacing));
             }
 
-            g.DrawString("Станок A", this.Font, Brushes.Black, new PointF(10, y-20));
+            g.DrawString("Станок A", this.Font, Brushes.Black, new PointF(10, y - 20));
             g.DrawString("Станок B", this.Font, Brushes.Black, new PointF(10, y + 30));
             g.DrawString("Станок C", this.Font, Brushes.Black, new PointF(10, y + 80));
 
@@ -894,11 +962,11 @@ namespace Modeling1
             }
         }
 
-            /**
-             * Метод меняет местами элементы матрицы одной строки
-             * с элемантами этой же матрицы другой строки
-             */
-            static int[,] Swap(int[,] matrix, int row1, int row2)
+        /**
+         * Метод меняет местами элементы матрицы одной строки
+         * с элемантами этой же матрицы другой строки
+         */
+        static int[,] Swap(int[,] matrix, int row1, int row2)
         {
             int colums = matrix.GetLength(1);
             for (int j = 0; j < colums; j++)
