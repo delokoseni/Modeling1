@@ -73,7 +73,6 @@ namespace Modeling1
             return totalTime; // Возвращаем общее время
         }
 
-
         static int CalculateDowntimeNx3(int[,] matrix, int[] indices)
         {
             int[] downtime = new int[indices.Length];
@@ -149,7 +148,6 @@ namespace Modeling1
 
             return totalTime; // Возвращаем общее время
         }
-
 
         static bool NextPermutation(int[] arr)
         {

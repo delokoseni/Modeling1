@@ -48,7 +48,6 @@ namespace Modeling1
             buttonRun12.Visible = false;
             buttonRun21.Visible = false;
             buttonRun22.Visible = false;
-            labelDowntime.Visible = false;
             this.BackColor = Color.White;
         }
 
@@ -94,117 +93,49 @@ namespace Modeling1
          */
         private void buttonTask1_Click(object sender, EventArgs e)
         {
-            labelA.Text = "Ai";
-            labelB.Text = "Bi";
-            labelC.Visible = false;
-            labelC1.Visible = false;
-            labelC2.Visible = false;
-            labelC3.Visible = false;
-            labelC4.Visible = false;
-            labelC5.Visible = false;
             buttonRun21.Visible = false;
             buttonRun22.Visible = false;
             g.Clear(Color.White);
-            labelDowntime.Visible = true;
-            labelI.Visible = true;
-            label1.Visible = true;
-            label2.Visible = true;
-            label3.Visible = true;
-            label4.Visible = true;
-            label5.Visible = true;
-            labelA.Visible = true;
-            labelA1.Visible = true;
-            /**
-            * Значения, с которыми работает программа
-            */
-            labelA1.Text = "12";
-            labelA2.Visible = true;
-            labelA2.Text = "7";
-            labelA3.Visible = true;
-            labelA3.Text = "4";
-            labelA4.Visible = true;
-            labelA4.Text = "2";
-            labelA5.Visible = true;
-            labelA5.Text = "1";
-            labelB.Visible = true;
-            labelB1.Visible = true;
-            labelB1.Text = "2";
-            labelB2.Visible = true;
-            labelB2.Text = "4";
-            labelB3.Visible = true;
-            labelB3.Text = "2";
-            labelB4.Visible = true;
-            labelB4.Text = "8";
-            labelB5.Visible = true;
-            labelB5.Text = "7";
 
             /**
              * Значения, с которыми работает программа
              */
-            task1 = new int[,]
-            {
-                { 12, 2 },
-                { 7, 4 },
-                { 4, 2 },
-                { 2, 8 },
-                { 1, 7 }
-            };
+            task1 = new int[5, 2];
+            string filePath = "C:\\Users\\artur\\source\\repos\\Modeling1\\task1.txt"; 
+            ArrayLoader.LoadArrayFromFile(filePath, task1);
+            LoadDataIntoLabels(task1, true);
+
+            labelDowntime.Location = new Point(13, 142);
             buttonRun1.Visible = true;
             buttonRun12.Visible = true;
             findAmountOfDowntime2xn();
-            DrawGant2xn();
+            DrawGanttNx2();
         }
 
         private void buttonSort1_Click(object sender, EventArgs e)
         {
-            task1 = new int[,]
-            {
-                { 12, 2 },
-                { 7, 4 },
-                { 4, 2 },
-                { 2, 8 },
-                { 1, 7 }
-            };
+            task1 = new int[5, 2];
+            string filePath = "C:\\Users\\artur\\source\\repos\\Modeling1\\task1.txt";
+            ArrayLoader.LoadArrayFromFile(filePath, task1);
+
             task1 = sort2xn();
-            labelA1.Text = Convert.ToString(task1[0, 0]);
-            labelA2.Text = Convert.ToString(task1[1, 0]);
-            labelA3.Text = Convert.ToString(task1[2, 0]);
-            labelA4.Text = Convert.ToString(task1[3, 0]);
-            labelA5.Text = Convert.ToString(task1[4, 0]);
-            labelB1.Text = Convert.ToString(task1[0, 1]);
-            labelB2.Text = Convert.ToString(task1[1, 1]);
-            labelB3.Text = Convert.ToString(task1[2, 1]);
-            labelB4.Text = Convert.ToString(task1[3, 1]);
-            labelB5.Text = Convert.ToString(task1[4, 1]);
+            LoadDataIntoLabels(task1, true);
             findAmountOfDowntime2xn();
             g.Clear(Color.White);
-            DrawGant2xn();
+            DrawGanttNx2();
         }
 
         private void buttonSort12_Click(object sender, EventArgs e)
         {
-            task1 = new int[,]
-            {
-                { 12, 2 },
-                { 7, 4 },
-                { 4, 2 },
-                { 2, 8 },
-                { 1, 7 }
-            };
+            task1 = new int[5, 2];
+            string filePath = "C:\\Users\\artur\\source\\repos\\Modeling1\\task1.txt";
+            ArrayLoader.LoadArrayFromFile(filePath, task1);
+
             task1 = Swaper.GetBestPermutation(task1);
-            labelA1.Text = Convert.ToString(task1[0, 0]);
-            labelA2.Text = Convert.ToString(task1[1, 0]);
-            labelA3.Text = Convert.ToString(task1[2, 0]);
-            labelA4.Text = Convert.ToString(task1[3, 0]);
-            labelA5.Text = Convert.ToString(task1[4, 0]);
-            labelB1.Text = Convert.ToString(task1[0, 1]);
-            labelB2.Text = Convert.ToString(task1[1, 1]);
-            labelB3.Text = Convert.ToString(task1[2, 1]);
-            labelB4.Text = Convert.ToString(task1[3, 1]);
-            labelB5.Text = Convert.ToString(task1[4, 1]);
+            LoadDataIntoLabels(task1, true);
             g.Clear(Color.White);
             findAmountOfDowntime2xn();
-            DrawGant2xn();
+            DrawGanttNx2();
         }
 
         /**
@@ -290,13 +221,12 @@ namespace Modeling1
                 totalTime += task1[i, 1];
             }
 
-            labelDowntime.Visible = true;
             labelDowntime.Location = new Point(13, 142);
             labelDowntime.Text = "Время окончания обработки: " + totalTime;
         }
 
 
-        private void DrawGant2xn()
+        private void DrawGanttNx2()
         {
             // Определяем кисти для каждого цвета
             SolidBrush sb1 = new SolidBrush(Color.Red);
@@ -402,26 +332,7 @@ namespace Modeling1
                 task2[i, 1] = task2Copy[i, 1]; // Значения B остаются теми же
                 task2[i, 2] = task1[i, 1] - task2Copy[i, 1]; // Восстанавливаем значения C
             }
-
-            // Обновляем метки для task2
-            labelA.Text = "Ai";
-            labelA1.Text = Convert.ToString(task2[0, 0]);
-            labelA2.Text = Convert.ToString(task2[1, 0]);
-            labelA3.Text = Convert.ToString(task2[2, 0]);
-            labelA4.Text = Convert.ToString(task2[3, 0]);
-            labelA5.Text = Convert.ToString(task2[4, 0]);
-            labelB.Text = "Bi";
-            labelB1.Text = Convert.ToString(task2[0, 1]);
-            labelB2.Text = Convert.ToString(task2[1, 1]);
-            labelB3.Text = Convert.ToString(task2[2, 1]);
-            labelB4.Text = Convert.ToString(task2[3, 1]);
-            labelB5.Text = Convert.ToString(task2[4, 1]);
-            labelC.Visible = true;
-            labelC1.Text = Convert.ToString(task2[0, 2]);
-            labelC2.Text = Convert.ToString(task2[1, 2]);
-            labelC3.Text = Convert.ToString(task2[2, 2]);
-            labelC4.Text = Convert.ToString(task2[3, 2]);
-            labelC5.Text = Convert.ToString(task2[4, 2]);
+            LoadDataIntoLabels(task2, false);
         }
 
 
@@ -430,106 +341,42 @@ namespace Modeling1
          */
         private void buttonTask2_Click(object sender, EventArgs e)
         {
-            labelA.Text = "Ai";
-            labelB.Text = "Bi";
             g.Clear(Color.White);
-            labelDowntime.Visible = true;
             buttonRun1.Visible = false;
             buttonRun12.Visible = false;
-            labelI.Visible = true;
-            labelI.Visible = true;
-            label1.Visible = true;
-            label2.Visible = true;
-            label3.Visible = true;
-            label4.Visible = true;
-            label5.Visible = true;
-            labelA.Visible = true;
-            labelA1.Visible = true;
-            /**
-             * Числа из таблицы идут по порядку, первая строка первого столбца,
-             * вторая строка первого столбца и т.д.
-             */
-            labelA1.Text = "12";
-            labelA2.Visible = true;
-            labelA2.Text = "7";
-            labelA3.Visible = true;
-            labelA3.Text = "4"; 
-            labelA4.Visible = true;
-            labelA4.Text = "6";
-            labelA5.Visible = true;
-            labelA5.Text = "5";
-            labelB.Visible = true;
-            labelB1.Visible = true;
-            labelB1.Text = "2";
-            labelB2.Visible = true;
-            labelB2.Text = "4";
-            labelB3.Visible = true;
-            labelB3.Text = "2";
-            labelB4.Visible = true;
-            labelB4.Text = "3";
-            labelB5.Visible = true;
-            labelB5.Text = "2";
-            labelC.Visible = true;
-            labelC1.Visible = true;
-            labelC1.Text = "2";
-            labelC2.Visible = true;
-            labelC2.Text = "6";
-            labelC3.Visible = true;
-            labelC3.Text = "7";
-            labelC4.Visible = true;
-            labelC4.Text = "4";
-            labelC5.Visible = true;
-            labelC5.Text = "8";
 
             /**
              * Значения, с которыми работает программа
              */
-            task2 = new int[,]
-            {
-                { 12, 2, 2 },
-                { 7, 4, 6 },
-                { 4, 2, 7 },
-                { 6, 3, 4 },
-                { 5, 2, 8 }
-            };
+            task2 = new int[5, 3];
+            string filePath = "C:\\Users\\artur\\source\\repos\\Modeling1\\task2.txt";
+            ArrayLoader.LoadArrayFromFile(filePath, task2);
+            LoadDataIntoLabels(task2, false);
+
+            labelDowntime.Location = new Point(13, 142);
             buttonRun21.Visible = true;
             buttonRun22.Visible = true;
             findAmountOfDowntime3xn();
-            draw3xn();
+            DrawGanttNx3();
         }
 
         //по алгоритму
         private void buttonRun21_Click(object sender, EventArgs e)
         {
+            task2 = new int[5, 3];
+            string filePath = "C:\\Users\\artur\\source\\repos\\Modeling1\\task2.txt";
+            ArrayLoader.LoadArrayFromFile(filePath, task2);
             int[,] task2Copy = (int[,])task2.Clone(); // Создаем копию task2
-            task2 = new int[,]
-            {
-                { 12, 2, 2 },
-                { 7, 4, 6 },
-                { 4, 2, 7 },
-                { 6, 3, 4 },
-                { 5, 2, 8 }
-            };
+
             if (CheckData())
             {
                 convertToNx2(task2Copy); // Передаем копию в метод
                 task1 = sort2xn();
                 RestoreTask2FromTask1(task2Copy);
-                labelC.Visible = true;
-                labelC1.Visible = true;
-                labelC1.Text = Convert.ToString(task2[0, 2]);
-                labelC2.Visible = true;
-                labelC2.Text = Convert.ToString(task2[1, 2]);
-                labelC3.Visible = true;
-                labelC3.Text = Convert.ToString(task2[2, 2]);
-                labelC4.Visible = true;
-                labelC4.Text = Convert.ToString(task2[3, 2]);
-                labelC5.Visible = true;
-                labelC5.Text = Convert.ToString(task2[4, 2]);
+                LoadDataIntoLabels(task2, false);
                 g.Clear(Color.White);
-                labelDowntime.Visible = true;
                 findAmountOfDowntime3xn();
-                draw3xn();
+                DrawGanttNx3();
             }
             else
             {
@@ -537,34 +384,10 @@ namespace Modeling1
                 MessageBox.Show("Условие не выполняется, результат был найден перебором", "Информация",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 task2 = Swaper.GetBestPermutationNx3(task2);
-                labelA.Text = "Ai";
-                labelA1.Text = Convert.ToString(task2[0, 0]);
-                labelA1.Text = Convert.ToString(task2[0, 0]);
-                labelA2.Text = Convert.ToString(task2[1, 0]);
-                labelA3.Text = Convert.ToString(task2[2, 0]);
-                labelA4.Text = Convert.ToString(task2[3, 0]);
-                labelA5.Text = Convert.ToString(task2[4, 0]);
-                labelB.Text = "Bi";
-                labelB1.Text = Convert.ToString(task2[0, 1]);
-                labelB2.Text = Convert.ToString(task2[1, 1]);
-                labelB3.Text = Convert.ToString(task2[2, 1]);
-                labelB4.Text = Convert.ToString(task2[3, 1]);
-                labelB5.Text = Convert.ToString(task2[4, 1]);
-                labelC.Visible = true;
-                labelC1.Visible = true;
-                labelC1.Text = Convert.ToString(task2[0, 2]);
-                labelC2.Visible = true;
-                labelC2.Text = Convert.ToString(task2[1, 2]);
-                labelC3.Visible = true;
-                labelC3.Text = Convert.ToString(task2[2, 2]);
-                labelC4.Visible = true;
-                labelC4.Text = Convert.ToString(task2[3, 2]);
-                labelC5.Visible = true;
-                labelC5.Text = Convert.ToString(task2[4, 2]);
-                labelDowntime.Visible = true;
+                LoadDataIntoLabels(task2, false);
                 g.Clear(Color.White);
                 findAmountOfDowntime3xn();
-                draw3xn();
+                DrawGanttNx3();
             }
 
         }
@@ -572,43 +395,15 @@ namespace Modeling1
         //Перебором
         private void buttonRun22_Click(object sender, EventArgs e)
         {
-            task2 = new int[,]
-            {
-                { 12, 2, 2 },
-                { 7, 4, 6 },
-                { 4, 2, 7 },
-                { 6, 3, 4 },
-                { 5, 2, 8 }
-            };
+            task2 = new int[5, 3];
+            string filePath = "C:\\Users\\artur\\source\\repos\\Modeling1\\task2.txt";
+            ArrayLoader.LoadArrayFromFile(filePath, task2);
+
             task2 = Swaper.GetBestPermutationNx3(task2);
-            labelA.Text = "Ai";
-            labelA1.Text = Convert.ToString(task2[0, 0]);
-            labelA1.Text = Convert.ToString(task2[0, 0]);
-            labelA2.Text = Convert.ToString(task2[1, 0]);
-            labelA3.Text = Convert.ToString(task2[2, 0]);
-            labelA4.Text = Convert.ToString(task2[3, 0]);
-            labelA5.Text = Convert.ToString(task2[4, 0]);
-            labelB.Text = "Bi";
-            labelB1.Text = Convert.ToString(task2[0, 1]);
-            labelB2.Text = Convert.ToString(task2[1, 1]);
-            labelB3.Text = Convert.ToString(task2[2, 1]);
-            labelB4.Text = Convert.ToString(task2[3, 1]);
-            labelB5.Text = Convert.ToString(task2[4, 1]);
-            labelC.Visible = true;
-            labelC1.Visible = true;
-            labelC1.Text = Convert.ToString(task2[0, 2]);
-            labelC2.Visible = true;
-            labelC2.Text = Convert.ToString(task2[1, 2]);
-            labelC3.Visible = true;
-            labelC3.Text = Convert.ToString(task2[2, 2]);
-            labelC4.Visible = true;
-            labelC4.Text = Convert.ToString(task2[3, 2]);
-            labelC5.Visible = true;
-            labelC5.Text = Convert.ToString(task2[4, 2]);
+            LoadDataIntoLabels(task2, false);
             g.Clear(Color.White);
-            labelDowntime.Visible = true;
             findAmountOfDowntime3xn();
-            draw3xn();
+            DrawGanttNx3();
         }
 
         /**
@@ -639,34 +434,6 @@ namespace Modeling1
          * Метод сводит задачу с тремя станками
          * к задаче с двуммя станками
          */
-        /*private void convertToNx2()
-        {
-            task1 = new int[5, 2];
-            for (int i = 0; i < task1.GetLength(0); i++)
-            {
-                task1[i, 0] = task2[i, 0] + task2[i, 1];
-                task1[i, 1] = task2[i, 2] + task2[i, 1];
-            }
-            labelA.Text = "Di";
-            labelA1.Text = Convert.ToString(task1[0, 0]);
-            labelA1.Text = Convert.ToString(task1[0, 0]);
-            labelA2.Text = Convert.ToString(task1[1, 0]);
-            labelA3.Text = Convert.ToString(task1[2, 0]);
-            labelA4.Text = Convert.ToString(task1[3, 0]);
-            labelA5.Text = Convert.ToString(task1[4, 0]);
-            labelB.Text = "Ei";
-            labelB1.Text = Convert.ToString(task1[0, 1]);
-            labelB2.Text = Convert.ToString(task1[1, 1]);
-            labelB3.Text = Convert.ToString(task1[2, 1]);
-            labelB4.Text = Convert.ToString(task1[3, 1]);
-            labelB5.Text = Convert.ToString(task1[4, 1]);
-            labelC.Visible = false;
-            labelC1.Visible = false;
-            labelC2.Visible = false;
-            labelC3.Visible = false;
-            labelC4.Visible = false;
-            labelC5.Visible = false;
-        }*/
 
         private void convertToNx2(int[,] inputTask)
         {
@@ -676,27 +443,7 @@ namespace Modeling1
                 task1[i, 0] = inputTask[i, 0] + inputTask[i, 1];
                 task1[i, 1] = inputTask[i, 2] + inputTask[i, 1];
             }
-            labelA.Text = "Di";
-            labelA1.Text = Convert.ToString(task1[0, 0]);
-            labelA1.Text = Convert.ToString(task1[0, 0]);
-            labelA2.Text = Convert.ToString(task1[1, 0]);
-            labelA3.Text = Convert.ToString(task1[2, 0]);
-            labelA4.Text = Convert.ToString(task1[3, 0]);
-            labelA5.Text = Convert.ToString(task1[4, 0]);
-            labelB.Text = "Ei";
-            labelB1.Text = Convert.ToString(task1[0, 1]);
-            labelB2.Text = Convert.ToString(task1[1, 1]);
-            labelB3.Text = Convert.ToString(task1[2, 1]);
-            labelB4.Text = Convert.ToString(task1[3, 1]);
-            labelB5.Text = Convert.ToString(task1[4, 1]);
-            labelC.Visible = false;
-            labelC1.Visible = false;
-            labelC2.Visible = false;
-            labelC3.Visible = false;
-            labelC4.Visible = false;
-            labelC5.Visible = false;
         }
-
 
         /**
          * Алгоритм Джонсона для матрицы Nx3
@@ -832,7 +579,7 @@ namespace Modeling1
             labelDowntime.Text = "Время окончания обработки: " + totalTime;
         }
 
-        private void draw3xn()
+        private void DrawGanttNx3()
         {
             // Определяем кисти для каждого цвета
             SolidBrush sb1 = new SolidBrush(Color.Red);
@@ -1038,6 +785,57 @@ namespace Modeling1
                 }
             }
             return matrix;
+        }
+        private void LoadDataIntoLabels(int[,] taskData, bool isTask1)
+        {
+            ShowILabels();
+
+            // Установим видимость для Label A
+            labelA.Visible = true;
+            for (int i = 0; i < 5; i++)
+            {
+                Controls[$"labelA{i + 1}"].Visible = true;
+                Controls[$"labelA{i + 1}"].Text = taskData[i, 0].ToString();
+            }
+
+            // Установим видимость для Label B
+            labelB.Visible = true;
+            for (int i = 0; i < 5; i++)
+            {
+                Controls[$"labelB{i + 1}"].Visible = true;
+                Controls[$"labelB{i + 1}"].Text = taskData[i, 1].ToString();
+            }
+
+            // Установим видимость для Label C, если это task2
+            if (!isTask1)
+            {
+                labelC.Visible = true;
+                for (int i = 0; i < 5; i++)
+                {
+                    Controls[$"labelC{i + 1}"].Visible = true;
+                    Controls[$"labelC{i + 1}"].Text = taskData[i, 2].ToString();
+                }
+            }
+            else
+            {
+                // Скрыть Label C для task1
+                labelC.Visible = false;
+                for (int i = 0; i < 5; i++)
+                {
+                    Controls[$"labelC{i + 1}"].Visible = false;
+                }
+            }
+        }
+
+
+        private void ShowILabels()
+        {
+            labelI.Visible = true;
+            label1.Visible = true;
+            label2.Visible = true;
+            label3.Visible = true;
+            label4.Visible = true;
+            label5.Visible = true;
         }
     }
 }
