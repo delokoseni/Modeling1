@@ -52,7 +52,7 @@
             this.labelC3 = new System.Windows.Forms.Label();
             this.labelC4 = new System.Windows.Forms.Label();
             this.labelC5 = new System.Windows.Forms.Label();
-            this.buttonRun1 = new System.Windows.Forms.Button();
+            this.buttonRun11 = new System.Windows.Forms.Button();
             this.buttonRun12 = new System.Windows.Forms.Button();
             this.labelDowntime = new System.Windows.Forms.Label();
             this.buttonTask2 = new System.Windows.Forms.Button();
@@ -301,15 +301,15 @@
             this.labelC5.TabIndex = 29;
             this.labelC5.Text = "label3";
             // 
-            // buttonRun1
+            // buttonRun11
             // 
-            this.buttonRun1.Location = new System.Drawing.Point(13, 42);
-            this.buttonRun1.Name = "buttonRun1";
-            this.buttonRun1.Size = new System.Drawing.Size(175, 50);
-            this.buttonRun1.TabIndex = 30;
-            this.buttonRun1.Text = "Найти алгоритмом";
-            this.buttonRun1.UseVisualStyleBackColor = true;
-            this.buttonRun1.Click += new System.EventHandler(this.buttonSort1_Click);
+            this.buttonRun11.Location = new System.Drawing.Point(13, 42);
+            this.buttonRun11.Name = "buttonRun1";
+            this.buttonRun11.Size = new System.Drawing.Size(175, 50);
+            this.buttonRun11.TabIndex = 30;
+            this.buttonRun11.Text = "Найти алгоритмом";
+            this.buttonRun11.UseVisualStyleBackColor = true;
+            this.buttonRun11.Click += new System.EventHandler(this.buttonSort11_Click);
             // 
             // buttonRun12
             // 
@@ -378,7 +378,7 @@
             this.Controls.Add(this.buttonRun21);
             this.Controls.Add(this.buttonTask2);
             this.Controls.Add(this.labelDowntime);
-            this.Controls.Add(this.buttonRun1);
+            this.Controls.Add(this.buttonRun11);
             this.Controls.Add(this.buttonRun12);
             this.Controls.Add(this.labelC5);
             this.Controls.Add(this.labelC4);
@@ -439,7 +439,7 @@
         private System.Windows.Forms.Label labelC3;
         private System.Windows.Forms.Label labelC4;
         private System.Windows.Forms.Label labelC5;
-        private System.Windows.Forms.Button buttonRun1;
+        private System.Windows.Forms.Button buttonRun11;
         private System.Windows.Forms.Button buttonRun12;
         private System.Windows.Forms.Label labelDowntime;
         private System.Windows.Forms.Button buttonTask2;

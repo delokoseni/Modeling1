@@ -10,11 +10,7 @@ namespace Modeling1
 
     internal class ArrayLoader
     {
-        /// <summary>
-        /// Считывает данные из текстового файла и заполняет переданный многомерный массив.
-        /// </summary>
-        /// <param name="filePath">Путь к текстовому файлу.</param>
-        /// <param name="array">Многомерный массив для заполнения.</param>
+        // Считывает данные из текстового файла и заполняет переданный многомерный массив
         public static void LoadArrayFromFile(string filePath, int[,] array)
         {
             // Проверка на существование файла

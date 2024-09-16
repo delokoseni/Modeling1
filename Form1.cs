@@ -19,7 +19,7 @@ namespace Modeling1
         {
             InitializeComponent();
             g = CreateGraphics();
-            DisplayPartColors(); // Вызов метода для отображения цветов деталей
+            DisplayPartColors(); 
             labelI.Visible = false;
             label1.Visible = false;
             label2.Visible = false;
@@ -44,7 +44,7 @@ namespace Modeling1
             labelC3.Visible = false;
             labelC4.Visible = false;
             labelC5.Visible = false;
-            buttonRun1.Visible = false;
+            buttonRun11.Visible = false;
             buttonRun12.Visible = false;
             buttonRun21.Visible = false;
             buttonRun22.Visible = false;
@@ -55,6 +55,10 @@ namespace Modeling1
 
         #region firts task
 
+        /**
+         * Метод для отображения информации
+         * о соответствии номера детали и цвета на графике
+         */
         private void DisplayPartColors()
         {
             // Создаем панель для размещения цветных квадратиков
@@ -97,34 +101,39 @@ namespace Modeling1
             buttonRun22.Visible = false;
             g.Clear(Color.White);
 
-            /**
-             * Значения, с которыми работает программа
-             */
             task1 = new int[5, 2];
             string filePath = "C:\\Users\\artur\\source\\repos\\Modeling1\\task1.txt"; 
             ArrayLoader.LoadArrayFromFile(filePath, task1);
             LoadDataIntoLabels(task1, true);
 
             labelDowntime.Location = new Point(13, 142);
-            buttonRun1.Visible = true;
+            buttonRun11.Visible = true;
             buttonRun12.Visible = true;
-            findAmountOfDowntime2xn();
+            FindAmountOfDowntimeNx2();
             DrawGanttNx2();
         }
 
-        private void buttonSort1_Click(object sender, EventArgs e)
+        /**
+         * Метод обрабатывающий событие
+         * нажатия кнопки buttonRun11
+         */
+        private void buttonSort11_Click(object sender, EventArgs e)
         {
             task1 = new int[5, 2];
             string filePath = "C:\\Users\\artur\\source\\repos\\Modeling1\\task1.txt";
             ArrayLoader.LoadArrayFromFile(filePath, task1);
 
-            task1 = sort2xn();
+            task1 = JohnsonNx2();
             LoadDataIntoLabels(task1, true);
-            findAmountOfDowntime2xn();
+            FindAmountOfDowntimeNx2();
             g.Clear(Color.White);
             DrawGanttNx2();
         }
 
+        /**
+         * Метод обрабатывающий событие
+         * нажатия кнопки buttonRun12
+         */
         private void buttonSort12_Click(object sender, EventArgs e)
         {
             task1 = new int[5, 2];
@@ -134,14 +143,14 @@ namespace Modeling1
             task1 = Swaper.GetBestPermutation(task1);
             LoadDataIntoLabels(task1, true);
             g.Clear(Color.White);
-            findAmountOfDowntime2xn();
+            FindAmountOfDowntimeNx2();
             DrawGanttNx2();
         }
 
         /**
          * Алгоритм Джонсона для матрицы Nx2
          */
-        private int[,] sort2xn()
+        private int[,] JohnsonNx2()
         {
             int[,] matrix = new int[task1.GetLength(0), task1.GetLength(1)];
             int linesCount = task1.GetLength(0);
@@ -153,7 +162,7 @@ namespace Modeling1
                 int minElement = task1[0, 0];
                 int colum = 0;
                 int row = 0;
-                //поиск минимального элемента
+                // Поиск минимального элемента
                 for (int i = 0; i < linesCount; i++)
                 {
                     for (int j = 0; j < clolumsCount; j++)
@@ -166,21 +175,21 @@ namespace Modeling1
                         }
                     }
                 }
-                //если в первом столбце, то записываю наверх
+                // Если в первом столбце, то записываю наверх
                 if (colum == 0)
                 {
                     matrix[top, 0] = task1[row, 0];
                     matrix[top, 1] = task1[row, 1];
                     top++;
                 }
-                //во втором - записываю вниз
+                // Во втором - записываю вниз
                 else
                 {
                     matrix[button, 0] = task1[row, 0];
                     matrix[button, 1] = task1[row, 1];
                     button--;
                 }
-                //удаляю строку из первоначального массива
+                // Удаляю строку из первоначального массива
                 for (int i = row; i < linesCount - 1; i++)
                     for (int j = 0; j < clolumsCount; j++)
                         task1[i, j] = task1[i + 1, j];
@@ -189,11 +198,13 @@ namespace Modeling1
             return matrix;
         }
 
-        private void findAmountOfDowntime2xn()
+        /**
+         * Поиск времени окончания обработки для Nx2
+         */
+        private void FindAmountOfDowntimeNx2()
         {
             int[] x = new int[task1.GetLength(0)];
 
-            // Вычисляем простои для каждого задания
             for (int i = 0; i < task1.GetLength(0); i++)
             {
                 int sumTask1 = 0;
@@ -225,10 +236,11 @@ namespace Modeling1
             labelDowntime.Text = "Время окончания обработки: " + totalTime;
         }
 
-
+        /**
+         * Отрисовка графиков Ганта для двух станков
+         */
         private void DrawGanttNx2()
         {
-            // Определяем кисти для каждого цвета
             SolidBrush sb1 = new SolidBrush(Color.Red);
             SolidBrush sb2 = new SolidBrush(Color.Orange);
             SolidBrush sb3 = new SolidBrush(Color.Yellow);
@@ -236,11 +248,10 @@ namespace Modeling1
             SolidBrush sb5 = new SolidBrush(Color.Purple);
             SolidBrush sbDowntime = new SolidBrush(Color.LightGray);
 
-            // Начальная позиция для графиков
-            int x = 10; // Измените X для отступа от левого края
+            int x = 10; 
             int y = 200;
-            int squareSize = 10; // Размер квадратика
-            int spacing = 2; // Расстояние между квадратиками
+            int squareSize = 10; 
+            int spacing = 2; 
 
             // Отрисовка графиков Ганта и названий станков
             for (int i = 0; i < task1.GetLength(0); i++)
@@ -268,15 +279,14 @@ namespace Modeling1
                 x += (numSquares * (squareSize + spacing));
             }
 
-            // Рисуем текст названия станка только для A и B
             g.DrawString("Станок A", this.Font, Brushes.Black, new Point(10, y - 20));
             g.DrawString("Станок B", this.Font, Brushes.Black, new Point(10, y + 30));
 
             // Отрисовка простоев
-            y += 50; // Смещение вниз для следующего ряда
-            x = 10; // Сброс X для простоев
+            y += 50; 
+            x = 10; 
             int[] downtime = new int[task1.GetLength(0)];
-            // Рисуем простои для первого станка
+
             for (int i = 0; i < task1.GetLength(0); i++)
             {
                 int sumTask1 = 0;
@@ -324,30 +334,15 @@ namespace Modeling1
 
         #endregion
 
-        private void RestoreTask2FromTask1(int[,] task2Copy)
-        {
-            for (int i = 0; i < task2.GetLength(0); i++)
-            {
-                task2[i, 0] = task1[i, 0] - task2Copy[i, 1]; // Восстанавливаем значения A
-                task2[i, 1] = task2Copy[i, 1]; // Значения B остаются теми же
-                task2[i, 2] = task1[i, 1] - task2Copy[i, 1]; // Восстанавливаем значения C
-            }
-            LoadDataIntoLabels(task2, false);
-        }
-
-
         /**
          * Работа с заданием №2
          */
         private void buttonTask2_Click(object sender, EventArgs e)
         {
             g.Clear(Color.White);
-            buttonRun1.Visible = false;
+            buttonRun11.Visible = false;
             buttonRun12.Visible = false;
 
-            /**
-             * Значения, с которыми работает программа
-             */
             task2 = new int[5, 3];
             string filePath = "C:\\Users\\artur\\source\\repos\\Modeling1\\task2.txt";
             ArrayLoader.LoadArrayFromFile(filePath, task2);
@@ -360,27 +355,20 @@ namespace Modeling1
             DrawGanttNx3();
         }
 
-        //по алгоритму
+        // По алгоритму
         private void buttonRun21_Click(object sender, EventArgs e)
         {
             task2 = new int[5, 3];
             string filePath = "C:\\Users\\artur\\source\\repos\\Modeling1\\task2.txt";
             ArrayLoader.LoadArrayFromFile(filePath, task2);
-            int[,] task2Copy = (int[,])task2.Clone(); // Создаем копию task2
 
             if (CheckData())
             {
-
-                // Приводим task2 к формату Nx2 и создаем копию task1
                 convertToNx2(task2);
-                int[,] task1Copy = (int[,])task1.Clone(); // Создаем копию task1 после преобразования
-                task1 = sort2xn(); // Сортируем task1
-
-                // Находим порядок строк и переставляем строки в task2
+                int[,] task1Copy = (int[,])task1.Clone(); 
+                task1 = JohnsonNx2(); 
                 int[] newOrder = FindRowOrder(task1, task1Copy);
                 RearrangeTask2(task2, newOrder);
-
-                // Обновляем интерфейс
                 LoadDataIntoLabels(task2, false);
                 g.Clear(Color.White);
                 findAmountOfDowntime3xn();
@@ -389,7 +377,6 @@ namespace Modeling1
             }
             else
             {
-                // Показываем сообщение о том, что условие не выполняется
                 MessageBox.Show("Условие не выполняется, результат был найден перебором", "Информация",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 task2 = Swaper.GetBestPermutationNx3(task2);
@@ -401,6 +388,9 @@ namespace Modeling1
 
         }
 
+        /**
+         * Находит разницу в порядке строк двух массивов
+         */
         private int[] FindRowOrder(int[,] task1, int[,] task1Copy)
         {
             int rows = task1.GetLength(0);
@@ -423,6 +413,9 @@ namespace Modeling1
             return order;
         }
 
+        /**
+         * Меняет порядок строк в массиве по заданному условию
+         */
         private void RearrangeTask2(int[,] task2, int[] newOrder)
         {
             int[,] rearrangedTask2 = new int[task2.GetLength(0), task2.GetLength(1)];
@@ -433,13 +426,11 @@ namespace Modeling1
                 rearrangedTask2[i, 1] = task2[newOrder[i], 1];
                 rearrangedTask2[i, 2] = task2[newOrder[i], 2];
             }
-
-            // Обновляем task2
             Array.Copy(rearrangedTask2, task2, rearrangedTask2.Length);
         }
 
 
-        //Перебором
+        // Перебором
         private void buttonRun22_Click(object sender, EventArgs e)
         {
             task2 = new int[5, 3];
@@ -481,7 +472,6 @@ namespace Modeling1
          * Метод сводит задачу с тремя станками
          * к задаче с двуммя станками
          */
-
         private void convertToNx2(int[,] inputTask)
         {
             task1 = new int[inputTask.GetLength(0), 2];
@@ -507,7 +497,7 @@ namespace Modeling1
                 int minElement = task1[0, 0];
                 int colum = 0;
                 int row = 0;
-                //поиск минимального элемента
+                // Поиск минимального элемента
                 for (int i = 0; i < linesCount; i++)
                     for (int j = 0; j < task1.GetLength(1); j++)
                         if (task1[i, j] < minElement)
@@ -516,7 +506,7 @@ namespace Modeling1
                             colum = j;
                             row = i;
                         }
-                //сортировка
+                // Сортировка
                 if (colum == 0)
                 {
                     matrix[top, 0] = task1[row, 0];
@@ -535,7 +525,7 @@ namespace Modeling1
                     data[button, 2] = task2[row, 2];
                     button--;
                 }
-                //удаление строки
+                // Удаление строки
                 for (int i = row; i < task1.GetLength(0) - 1; i++)
                     for (int j = 0; j < task1.GetLength(1); j++)
                         task1[i, j] = task1[i + 1, j];
@@ -553,8 +543,8 @@ namespace Modeling1
          */
         private void findAmountOfDowntime3xn()
         {
-            int[] downtime = new int[task2.GetLength(0)];
-            int[] downtimeforc = new int[task2.GetLength(0)]; // Массив для простоев
+            int[] downtime = new int[task2.GetLength(0)]; // Массив для простоев В
+            int[] downtimeforc = new int[task2.GetLength(0)]; // Массив для простоев С
 
             // Вычисляем простои
             for (int i = 0; i < task2.GetLength(0); i++)
@@ -562,7 +552,7 @@ namespace Modeling1
                 int sumTask2 = 0;
                 for (int n = 0; n <= i; n++)
                 {
-                    sumTask2 += task2[n, 0]; // Суммируем значения a_i
+                    sumTask2 += task2[n, 0]; // Суммируем значения ai
                 }
 
                 int sumDowntime = 0;
@@ -574,7 +564,7 @@ namespace Modeling1
                 int sumTask2Duration = 0;
                 for (int m = 0; m < i; m++)
                 {
-                    sumTask2Duration += task2[m, 1]; // Суммируем длительности b_i
+                    sumTask2Duration += task2[m, 1]; // Суммируем длительности bi
                 }
 
                 // Вычисляем downtime для текущего задания
@@ -595,7 +585,7 @@ namespace Modeling1
                 int sumTask1 = 0;
                 for (int n = 0; n <= i; n++)
                 {
-                    sumTask1 += task2[n, 1]; // сумма bi
+                    sumTask1 += task2[n, 1]; // Сумма bi
                 }
 
                 // Суммируем downtimeforc от 0 до i-1
@@ -626,9 +616,11 @@ namespace Modeling1
             labelDowntime.Text = "Время окончания обработки: " + totalTime;
         }
 
+        /**
+         * Отрисовка графиков Ганта для трех станков
+         */
         private void DrawGanttNx3()
         {
-            // Определяем кисти для каждого цвета
             SolidBrush sb1 = new SolidBrush(Color.Red);
             SolidBrush sb2 = new SolidBrush(Color.Orange);
             SolidBrush sb3 = new SolidBrush(Color.Yellow);
@@ -636,13 +628,11 @@ namespace Modeling1
             SolidBrush sb5 = new SolidBrush(Color.Purple);
             SolidBrush sbDowntime = new SolidBrush(Color.LightGray);
 
-            // Начальная позиция для графиков
-            int x = 10; // Измените X для отступа от левого края
+            int x = 10; 
             int y = 200;
-            int squareSize = 10; // Размер квадратика
-            int spacing = 2; // Расстояние между квадратиками
+            int squareSize = 10;
+            int spacing = 2; 
 
-            // Отрисовка графиков Ганта и названий станков
             for (int i = 0; i < task2.GetLength(0); i++)
             {
                 int width = task2[i, 0]; // Ширина в единицах
@@ -672,11 +662,10 @@ namespace Modeling1
             g.DrawString("Станок B", this.Font, Brushes.Black, new PointF(10, y + 30));
             g.DrawString("Станок C", this.Font, Brushes.Black, new PointF(10, y + 80));
 
-            // Отрисовка простоев
-            y += 50; // Смещение вниз для следующего ряда
-            x = 10; // Сброс X для простоев
+            y += 50; 
+            x = 10; 
             int[] downtime = new int[task2.GetLength(0)];
-            // Рисуем простои
+
             for (int i = 0; i < task2.GetLength(0); i++)
             {
                 int sumTask1 = 0;
@@ -721,36 +710,31 @@ namespace Modeling1
                 x += (numDurationSquares * (squareSize + spacing)); // Обновляем x с учетом длительности
             }
 
-            // Отрисовка простоев для второго ряда
-            y += 50; // Смещение вниз для следующего ряда
-            x = 10; // Сброс X для простоев
+            y += 50; 
+            x = 10; 
 
             int[] downtimeforc = new int[task2.GetLength(0)]; // Массив для простоев
                                                               // Рисуем простои
             for (int i = 0; i < task2.GetLength(0); i++)
             {
-                // Суммируем downtime от 0 до i
                 int sumDowntime = 0;
                 for (int m = 0; m <= i; m++)
                 {
                     sumDowntime += downtime[m];
                 }
 
-                // Суммируем task2 от 0 до i
                 int sumTask1 = 0;
                 for (int n = 0; n <= i; n++)
                 {
                     sumTask1 += task2[n, 1]; // сумма bi
                 }
 
-                // Суммируем downtimeforc от 0 до i-1
                 int sumDowntimeForc = 0;
                 for (int n = 0; n < i; n++)
                 {
                     sumDowntimeForc += downtimeforc[n];
                 }
 
-                // Суммируем task2 от 0 до i-1
                 int sumTask2Duration = 0;
                 for (int n = 0; n < i; n++)
                 {
@@ -787,52 +771,6 @@ namespace Modeling1
             }
         }
 
-        /**
-         * Метод меняет местами элементы матрицы одной строки
-         * с элемантами этой же матрицы другой строки
-         */
-        static int[,] Swap(int[,] matrix, int row1, int row2)
-        {
-            int colums = matrix.GetLength(1);
-            for (int j = 0; j < colums; j++)
-            {
-                int temp = matrix[row1, j];
-                matrix[row1, j] = matrix[row2, j];
-                matrix[row2, j] = temp;
-            }
-            return matrix;
-        }
-
-        static int[,] Sort(int[,] matrix)
-        {
-            int rows = matrix.GetLength(0);
-            int colums = matrix.GetLength(1);
-
-            for (int i = 0; i < rows - 1; i++)
-            {
-                for (int j = 0; j < rows - i - 1; j++)
-                {
-                    bool swap = false;
-                    for (int k = 0; k < colums; k++)
-                    {
-                        if (matrix[j, k] > matrix[j + 1, k])
-                        {
-                            swap = true;
-                            break;
-                        }
-                        else if (matrix[j, k] < matrix[j + 1, k])
-                        {
-                            break;
-                        }
-                    }
-                    if (swap)
-                    {
-                        matrix = Swap(matrix, j, j + 1);
-                    }
-                }
-            }
-            return matrix;
-        }
         private void LoadDataIntoLabels(int[,] taskData, bool isTask1)
         {
             ShowILabels();
@@ -873,7 +811,6 @@ namespace Modeling1
                 }
             }
         }
-
 
         private void ShowILabels()
         {
