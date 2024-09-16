@@ -370,13 +370,22 @@ namespace Modeling1
 
             if (CheckData())
             {
-                convertToNx2(task2Copy); // Передаем копию в метод
-                task1 = sort2xn();
-                RestoreTask2FromTask1(task2Copy);
+
+                // Приводим task2 к формату Nx2 и создаем копию task1
+                convertToNx2(task2);
+                int[,] task1Copy = (int[,])task1.Clone(); // Создаем копию task1 после преобразования
+                task1 = sort2xn(); // Сортируем task1
+
+                // Находим порядок строк и переставляем строки в task2
+                int[] newOrder = FindRowOrder(task1, task1Copy);
+                RearrangeTask2(task2, newOrder);
+
+                // Обновляем интерфейс
                 LoadDataIntoLabels(task2, false);
                 g.Clear(Color.White);
                 findAmountOfDowntime3xn();
                 DrawGanttNx3();
+
             }
             else
             {
@@ -391,6 +400,44 @@ namespace Modeling1
             }
 
         }
+
+        private int[] FindRowOrder(int[,] task1, int[,] task1Copy)
+        {
+            int rows = task1.GetLength(0);
+            int[] order = new int[rows];
+            bool[] matched = new bool[rows];
+
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < rows; j++)
+                {
+                    // Сравниваем строки
+                    if (!matched[j] && task1[i, 0] == task1Copy[j, 0] && task1[i, 1] == task1Copy[j, 1])
+                    {
+                        order[i] = j; // Запоминаем индекс оригинального массива
+                        matched[j] = true; // Помечаем строку как найденную
+                        break;
+                    }
+                }
+            }
+            return order;
+        }
+
+        private void RearrangeTask2(int[,] task2, int[] newOrder)
+        {
+            int[,] rearrangedTask2 = new int[task2.GetLength(0), task2.GetLength(1)];
+
+            for (int i = 0; i < newOrder.Length; i++)
+            {
+                rearrangedTask2[i, 0] = task2[newOrder[i], 0];
+                rearrangedTask2[i, 1] = task2[newOrder[i], 1];
+                rearrangedTask2[i, 2] = task2[newOrder[i], 2];
+            }
+
+            // Обновляем task2
+            Array.Copy(rearrangedTask2, task2, rearrangedTask2.Length);
+        }
+
 
         //Перебором
         private void buttonRun22_Click(object sender, EventArgs e)
